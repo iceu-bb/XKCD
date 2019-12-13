@@ -13,9 +13,9 @@ const PicsListStack = createStackNavigator(
     PicsList: {
       screen: PicsList,
       navigationOptions: {
-        headerTitle: 'XKCD memes',
+        headerTitle: 'XKCD',
         headerStyle: {
-          backgroundColor: '#A8D9F7'
+          backgroundColor: '#ededed'
         }
       }
     },
@@ -43,7 +43,7 @@ const AboutSectionStack = createStackNavigator(
       navigationOptions: {
         headerTitle: 'About',
         headerStyle: {
-          backgroundColor: '#A8D9F7'
+          backgroundColor: '#ededed'
         }
       }
     }
@@ -74,7 +74,7 @@ const Tabs = createBottomTabNavigator(
           fontSize: 10
         },
         style: {
-          backgroundColor: '#eee'
+          backgroundColor: '#ededed'
         }
       },
 

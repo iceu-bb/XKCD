@@ -6,8 +6,10 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
-  RefreshControl
+  RefreshControl,
+  Dimensions
 } from 'react-native';
+import { Placeholder, PlaceholderLine, Fade } from 'rn-placeholder';
 import { NavigationStackProp } from 'react-navigation-stack';
 import { getFunnyPictures } from '../services/xkcdApi';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -24,7 +26,7 @@ export const PicsList: React.FC<Props> = ({ navigation }) => {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    wait(1000).then(() => setRefreshing(false));
+    wait(2000).then(() => setRefreshing(false));
     fetchPictures();
   }, [refreshing]);
 
@@ -76,13 +78,11 @@ export const PicsList: React.FC<Props> = ({ navigation }) => {
     );
   }, []);
 
-  // TODO : Loader
-  if (pics.length < 2)
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
+  const windowHeight = Dimensions.get('window').height;
+  const numberOfPlaceholders = Math.floor((windowHeight - 100) / 120);
+  const iteratedArray = Array(numberOfPlaceholders)
+    .fill()
+    .map((_, i) => i + 1);
 
   return (
     <ScrollView
@@ -90,9 +90,27 @@ export const PicsList: React.FC<Props> = ({ navigation }) => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      <LinearGradient colors={['#129C8D', '#1BB08A', '#23C186']}>
-        {pics.map(pic => renderItem(pic))}
-      </LinearGradient>
+      {pics.length < 2 || refreshing ? (
+        <LinearGradient colors={['#129C8D', '#1BB08A', '#23C186']}>
+          <Placeholder
+            Animation={Fade}
+            style={{ paddingTop: 50, height: windowHeight }}
+          >
+            {iteratedArray.map((_, index) => (
+              <PlaceholderLine
+                key={index}
+                width={80}
+                height={100}
+                style={styles.placeholder}
+              />
+            ))}
+          </Placeholder>
+        </LinearGradient>
+      ) : (
+        <LinearGradient colors={['#129C8D', '#1BB08A', '#23C186']}>
+          {pics.map(pic => renderItem(pic))}
+        </LinearGradient>
+      )}
     </ScrollView>
   );
 };
@@ -121,5 +139,10 @@ const styles = StyleSheet.create({
   picture: {
     width: '40%',
     height: 100
+  },
+  placeholder: {
+    backgroundColor: '#1BB08A',
+    marginBottom: 25,
+    alignSelf: 'center'
   }
 });
