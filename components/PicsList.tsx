@@ -8,7 +8,7 @@ import {
   Image
 } from 'react-native';
 import { NavigationStackProp } from 'react-navigation-stack';
-import { getLastPic } from '../services/xkcdApi';
+import { getFunnyPictures } from '../services/xkcdApi';
 
 interface Props {
   navigation: NavigationStackProp;
@@ -28,13 +28,13 @@ interface Picture {
 export const PicsList: React.FC<Props> = ({ navigation }) => {
   const [pics, setPics] = useState<Picture[]>([]);
 
-  const initFetch = async () => {
-    const lastPic = await getLastPic();
-    setPics([lastPic]);
+  const fetchPictures = async () => {
+    const funnyPics = await getFunnyPictures();
+    setPics([...funnyPics]);
   };
 
   useEffect(() => {
-    initFetch();
+    fetchPictures();
   }, []);
 
   return (
@@ -59,7 +59,6 @@ export const PicsList: React.FC<Props> = ({ navigation }) => {
           </View>
         </TouchableOpacity>
       ))}
-      {/*<Text>{JSON.stringify(pics)}</Text> */}
     </ScrollView>
   );
 };
