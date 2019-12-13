@@ -15,9 +15,9 @@ const PicsListStack = createStackNavigator({
   },
   PicDetail: {
     screen: PicDetailed,
-    navigationOptions: {
-      headerTitle: 'Detailed Page'
-    }
+    navigationOptions: ({ navigation }) => ({
+      headerTitle: navigation.getParam('title')
+    })
   }
 });
 

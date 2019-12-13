@@ -43,7 +43,10 @@ export const PicsList: React.FC<Props> = ({ navigation }) => {
         <TouchableOpacity
           key={pic.num}
           onPress={() => {
-            navigation.navigate('PicDetail');
+            navigation.navigate('PicDetail', {
+              title: pic.safe_title,
+              img: pic.img
+            });
           }}
         >
           <View style={styles.itemContainer}>

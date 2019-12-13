@@ -1,12 +1,33 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { StyleSheet, ImageBackground } from 'react-native';
+import { NavigationStackProp } from 'react-navigation-stack';
 
-interface Props {}
+interface ParamProps {
+  title: string;
+  img: string;
+}
+interface Props {
+  navigation: NavigationStackProp<ParamProps>;
+}
 
-export const PicDetailed: React.FC<Props> = () => {
+export const PicDetailed: React.FC<Props> = ({ navigation }) => {
+  const { img } = navigation.state.params;
+
+  // Todo: handle when no img
+
   return (
-    <View>
-      <Text>PICS DETAILED PAGE</Text>
-    </View>
+    <ImageBackground
+      style={styles.backgroundImage}
+      source={{ uri: img }}
+      resizeMode='stretch'
+    />
   );
 };
+
+const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%'
+  }
+});
