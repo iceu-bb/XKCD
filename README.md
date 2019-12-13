@@ -1,6 +1,8 @@
 ### XKCD App - Recruitment Task 
 React Native App that presents funny pictures.
 
+Expo: https://expo.io/@dzonywalk/recruitment-task
+
 Main Tasks:
 1) Fetch Data from API server
 2) Display data (related to mockup)
