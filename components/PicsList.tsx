@@ -11,43 +11,27 @@ import {
 import { NavigationStackProp } from 'react-navigation-stack';
 import { getFunnyPictures } from '../services/xkcdApi';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Picture } from '../types/index';
+import { wait } from '../helpers/index';
 
 interface Props {
   navigation: NavigationStackProp;
-}
-
-interface Picture {
-  month: string;
-  num: number;
-  year: string;
-  safe_title: string;
-  alt: string;
-  img: string;
-  title: string;
-  day: string;
-}
-
-function wait(timeout) {
-  return new Promise(resolve => {
-    setTimeout(resolve, timeout);
-  });
 }
 
 export const PicsList: React.FC<Props> = ({ navigation }) => {
   const [pics, setPics] = useState<Picture[]>([]);
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = useCallback(() => {
     setRefreshing(true);
-
-    wait(1500).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
     fetchPictures();
   }, [refreshing]);
 
-  const fetchPictures = async () => {
+  const fetchPictures = useCallback(async () => {
     const funnyPics = await getFunnyPictures();
     setPics([...funnyPics]);
-  };
+  }, []);
 
   useEffect(() => {
     fetchPictures();
@@ -62,6 +46,37 @@ export const PicsList: React.FC<Props> = ({ navigation }) => {
     return Math.ceil(diffrenceMiliseconds / (1000 * 60 * 60 * 24));
   }, []);
 
+  const renderItem = useCallback(pic => {
+    const { num, img, safe_title, day, month, year } = pic;
+    return (
+      <TouchableOpacity
+        key={num}
+        onPress={() => {
+          navigation.navigate('PicDetail', {
+            title: safe_title,
+            img
+          });
+        }}
+      >
+        <View style={styles.itemContainer}>
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>{safe_title}</Text>
+            <Text style={styles.subTitle}>
+              {getDay(Number(day), Number(month), Number(year))} days ago
+            </Text>
+          </View>
+
+          <Image
+            style={styles.picture}
+            source={{ uri: `${img}` }}
+            resizeMode='cover'
+          />
+        </View>
+      </TouchableOpacity>
+    );
+  }, []);
+
+  // TODO : Loader
   if (pics.length < 2)
     return (
       <View>
@@ -76,35 +91,7 @@ export const PicsList: React.FC<Props> = ({ navigation }) => {
       }
     >
       <LinearGradient colors={['#129C8D', '#1BB08A', '#23C186']}>
-        {pics.map(pic => {
-          const { num, img, safe_title, day, month, year } = pic;
-          return (
-            <TouchableOpacity
-              key={num}
-              onPress={() => {
-                navigation.navigate('PicDetail', {
-                  title: safe_title,
-                  img
-                });
-              }}
-            >
-              <View style={styles.itemContainer}>
-                <View style={styles.textContainer}>
-                  <Text style={styles.title}>{safe_title}</Text>
-                  <Text style={styles.subTitle}>
-                    {getDay(Number(day), Number(month), Number(year))} days ago
-                  </Text>
-                </View>
-
-                <Image
-                  style={styles.picture}
-                  source={{ uri: `${img}` }}
-                  resizeMode='cover'
-                />
-              </View>
-            </TouchableOpacity>
-          );
-        })}
+        {pics.map(pic => renderItem(pic))}
       </LinearGradient>
     </ScrollView>
   );

@@ -1,18 +1,14 @@
 import React from 'react';
 import { StyleSheet, ImageBackground } from 'react-native';
 import { NavigationStackProp } from 'react-navigation-stack';
+import { ParamProps } from '../types/index';
 
-interface ParamProps {
-  title: string;
-  img: string;
-}
 interface Props {
   navigation: NavigationStackProp<ParamProps>;
 }
 
 export const PicDetailed: React.FC<Props> = ({ navigation }) => {
   const { img } = navigation.state.params;
-
   // Todo: handle when no img
 
   return (

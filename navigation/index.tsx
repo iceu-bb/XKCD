@@ -15,7 +15,7 @@ const PicsListStack = createStackNavigator(
       navigationOptions: {
         headerTitle: 'XKCD memes',
         headerStyle: {
-          backgroundColor: '#C5E2EF'
+          backgroundColor: '#A8D9F7'
         }
       }
     },
@@ -36,17 +36,20 @@ const PicsListStack = createStackNavigator(
   }
 );
 
-const AboutSectionStack = createStackNavigator({
-  AboutSection: {
-    screen: About,
-    navigationOptions: {
-      headerTitle: 'About',
-      headerStyle: {
-        backgroundColor: '#A8D9F7'
+const AboutSectionStack = createStackNavigator(
+  {
+    AboutSection: {
+      screen: About,
+      navigationOptions: {
+        headerTitle: 'About',
+        headerStyle: {
+          backgroundColor: '#A8D9F7'
+        }
       }
     }
-  }
-});
+  },
+  { headerLayoutPreset: 'center' }
+);
 
 const Tabs = createBottomTabNavigator(
   {
