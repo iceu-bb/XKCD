@@ -19,7 +19,7 @@ export const About: React.FC = () => {
   return (
     <ScrollView>
       <LinearGradient
-        style={{ flex: 1 }}
+        style={styles.gradient}
         colors={['#129C8D', '#1BB08A', '#23C186']}
       >
         <View style={styles.container}>{renderedContent}</View>
@@ -43,5 +43,8 @@ const styles = StyleSheet.create({
   paragraph: {
     fontSize: 16,
     marginBottom: 10
+  },
+  gradient: {
+    flex: 1
   }
 });

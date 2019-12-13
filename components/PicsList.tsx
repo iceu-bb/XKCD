@@ -40,8 +40,6 @@ export const PicsList: React.FC<Props> = ({ navigation }) => {
   }, []);
 
   const getDay = useCallback((day: number, month: number, year: number) => {
-    if (day === undefined || month === undefined || day === undefined) return;
-
     const today = Date.now();
     const pictureReleaseDate = new Date(year, month !== 0 ? month - 1 : 0, day);
     const diffrenceMiliseconds = today - pictureReleaseDate.getTime();
